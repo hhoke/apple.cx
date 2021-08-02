@@ -1,6 +1,6 @@
 # apple.cx
 
-I've noticed some fun patterns in the different kinds of ways one can cut apples.
+I've noticed some patterns in the different kinds of ways one can cut apples.
 It's probably not generalizable, but I think it's fun!
 So, I thought I'd make some videos of it.
 
