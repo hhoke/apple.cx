@@ -72,22 +72,47 @@ class IntersectionScene(Scene,GetIntersections):
         )
         self.play(title.animate.to_edge(DOWN))
 
-        apple = Circle(color=GREEN,radius=1)
+        apple = Circle(color=GREEN, radius=1)
         apple.set_fill(GREEN, opacity=0.4)
         core_color = "#18453B"
-        square = Square(color=core_color,side_length=0.5).set_fill(core_color, opacity=1)
-        vert_rect= Rectangle(color=BLACK,height=2,width=1)
-        square_right_center = square.get_critical_point(RIGHT)
-        vert_rect.align_to(square_right_center,LEFT)
+        core = Square(color=BLACK, side_length=0.5).set_fill(core_color, opacity=1)
 
-        first_label = Integer(1).scale(0.25)
-        first_label.next_to(square.get_corner(UP+RIGHT))
-        first_cut = Line()
+        core_top_right = core.get_critical_point(RIGHT+UP)
+        core_bottom_right = core.get_critical_point(RIGHT+DOWN)
+        first_cut = Line(core_top_right+UP, core_bottom_right+DOWN, color=BLACK)
+        first_label = Integer(1).scale(0.5)
+        first_label.next_to(core.get_corner(UP+RIGHT))
 
-        intersections = self.get_intersections_between_two_vmobs(apple, vert_rect)
-        for point in intersections:
-            self.add(Dot(radius=0.05, color=YELLOW).move_to(point))
+        second_cut = Line(core_top_right, core_top_right+LEFT*2, color=BLACK)
+        second_label = Integer(2).scale(0.5)
+        second_label.next_to(core.get_corner(UP+LEFT), UP)
 
-        self.add(apple, square, vert_rect, first_label)
-        self.play(Create(square))
+        core_top_left = core.get_critical_point(LEFT+UP)
+        third_cut = Line(core_top_left, core_top_left+DOWN*2, color=BLACK)
+        third_label = Integer(3).scale(0.5)
+        third_label.next_to(core.get_edge_center(LEFT), LEFT)
+
+        core_bottom_left = core.get_critical_point(LEFT+DOWN)
+        fourth_cut = Line(core_bottom_left, core_bottom_right, color=BLACK)
+        fourth_label = Integer(4).scale(0.5)
+        fourth_label.next_to(core.get_edge_center(DOWN), DOWN)
+
+        self.add(apple)
+        self.play(Create(first_cut), run_time=1)
+        self.add(first_label)
+        self.wait()
+
+        self.play(Create(second_cut), run_time=1)
+        self.add(second_label)
+        self.wait()
+
+        self.play(Create(third_cut), run_time=1)
+        self.add(third_label)
+        self.wait()
+
+        self.play(Create(fourth_cut), run_time=1)
+        self.add(fourth_label)
+        self.wait()
+
+        self.add(core)
         self.wait()
